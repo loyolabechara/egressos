@@ -1,5 +1,14 @@
 # egressos
-Sistema para cadastro de egressos do IPRJ
+Sistema para cadastro de egressos do IPRJ/UERJ
+
+
+
+O sistema conterá os módulos:
+. Cadastro dos egressos
+. Cadastro de oportunidades profissionais
+. Cadastro de eventos
+
+
 
 Campos do cadastro:
 
