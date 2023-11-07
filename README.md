@@ -9,27 +9,27 @@ O sistema conterá os módulos:
 . Cadastro de eventos
 
 
-
 Campos do cadastro:
 
 . Nome completo
 . e-mail
 . celular (whatsapp?)
-. Estado
-. Cidade
+. País/Estado/Cidade (Permitir mais de um)
 . Data de Nascimento
 . Curso realizado no IPRJ:
-    - Graduação:
+    - Graduação (Permitir mais de um):
     	Curso
     	Ano início
     	Ano conclusão
-    - Pós-graduação:
+    - Pós-graduação (Permitir mais de um):
     	Curso
-		Linha de pesquisa
+	Linha de pesquisa
     	Ano início
     	Ano conclusão
-. Cargo atual (mês/ano de início)
-. Empresa/Instituição atual
-. Setor de atuação da empresa/instituição
-. Perfil em redes sociais (Linkedin, Instagram, Twitter, Lattes)
-. Síntese de sua trajetória profissional
+. Empresa/Instituição (Permitir mais de um)
+    - Setor de atuação da empresa/instituição
+    - País/Estado/Cidade
+    - Perfil em redes sociais (Linkedin, Instagram, Twitter, Lattes)
+    - Síntese de sua trajetória profissional
+    - Cargo (Permitir mais de um)
+        mês/ano de início
