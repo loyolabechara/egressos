@@ -22,5 +22,7 @@ admin.site.site_title = "Egressos IPRJ/UERJ"
 
 urlpatterns = [
     path('', include('usuarios.urls', namespace='usuarios')),
+    path('cursos', include('cursos.urls', namespace='cursos')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
 ]

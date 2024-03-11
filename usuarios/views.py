@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 
 from .models import *
 from .functions import trataErro
+from .forms import *
 
 # Create your views here.
 
@@ -17,12 +20,43 @@ def politica_privacidade(request):
     return render(request, 'usuarios/politica_privacidade.html')
 
 
+def entrar(request):
+
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            user = authenticate(username=form.cleaned_data["email"], password=form.cleaned_data["senha"])
+
+            print('user:', user, form.cleaned_data["next"])
+
+            if user is not None:
+                login(request, user)
+                print('next:', form.cleaned_data["next"])
+                if form.cleaned_data["next"] == '':
+                    print('next vazio')
+                    return redirect(reverse('adm:inicio'))
+                else:
+                    print('next não vazio')
+                    return redirect('%s?next=%s' % (reverse('login'), full_path))
+
+        messages.error(request, 'E-Mail e/ou senha inválidos.')
+        return render(request, 'usuarios/login.html', { 'form' : form })
+
+    #    full_path = request.get_full_path()
+
+    full_path = request.META.get('HTTP_REFERER')
+    print('Caminho:', full_path)
+
+    form = LoginForm()
+    return render(request, 'usuarios/login.html', { 'form' : form })
+
+
+# @login_required
 def inicio(request):
 
-    if request.user.is_authenticated:
-        return render(request, 'usuarios/inicio_logado.html')
-    else:
-        return render(request, 'usuarios/inicio.html')
+    return render(request, 'usuarios/inicio.html')
+
 
 def cadastrar(request):
     if request.method == 'POST':
@@ -78,3 +112,16 @@ def cadastrar(request):
         form.fields["cidade"].initial = 3639
 
     return render(request, 'usuarios/cadastrar.html', { 'form': form })
+
+
+def carrega_pais(request):
+    arquivo = open('/home/loyola/Downloads/paises.txt')
+    for linha in arquivo:
+        print(linha)
+        linha_aux = linha.split(' - ')
+        pais = Pais(
+            nome  = linha_aux[0],
+            sigla = linha_aux[1],
+        )
+
+        pais.save()

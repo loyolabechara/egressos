@@ -3,6 +3,12 @@ from .models import *
 from .functions import validate_CPF
 
 
+class LoginForm(forms.Form):
+    email = forms.CharField(label='E-Mail:')
+    senha = forms.CharField(max_length=20, widget=forms.PasswordInput)
+    next = forms.CharField(widget = forms.HiddenInput(), required = False)
+
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 

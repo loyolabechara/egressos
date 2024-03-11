@@ -1,0 +1,55 @@
+{% extends "head.html" %}
+
+{% load static %}
+
+{% block head %}
+<br><br>
+<div class="row">
+    <div class="column">
+        <div class="centraliza_geral">
+            <div class="quadro_cad">
+
+                <img src="{% static "logo_iprj_uerj.png" %}" width="90%" />
+
+                <h2>Faça o seu login:</h2>
+
+                {% if form.errors %}
+                    <p>Por favor, entre com seu e-mail e senha corretos. Note que ambos os campos diferenciam maiúsculas e minúsculas.</p>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <p>Sua conta não permite acesso a esta página.</p>
+                    {% else %}
+                        <p>Por favor, faça login por esta página.</p>
+                    {% endif %}
+                {% endif %}
+
+                <form action="." method="post">
+
+                    {% csrf_token %}
+
+                    <table>
+                        <tr>
+                            <td>E-Mail:</td>
+                            <td>{{ form.username }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.password.label_tag }}</td>
+                            <td>{{ form.password }}</td>
+                        </tr>
+                    </table>
+                    <div class="espaco">
+                        <input class="button" type="submit" value="Entrar">
+                    </div>
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </form>
+
+                <a href="{% url 'password_reset' %}">Esqueci minha senha</a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
