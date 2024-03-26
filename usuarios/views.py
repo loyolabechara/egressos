@@ -49,6 +49,8 @@ def entrar(request):
     print('Caminho:', full_path)
 
     form = LoginForm()
+
+    print(form)
     return render(request, 'usuarios/login.html', { 'form' : form })
 
 
@@ -125,3 +127,14 @@ def carrega_pais(request):
         )
 
         pais.save()
+
+
+def load_cidades(request):
+
+    if not request.GET.get('id'):
+        return render(request, 'usuarios/ret_cidades.html', {})
+
+    estado_id = request.GET.get('id')
+    cidades = Cidade.objects.filter(estado = estado_id).order_by('nome')
+
+    return render(request, 'usuarios/ret_cidades.html', {'cidades' : cidades})

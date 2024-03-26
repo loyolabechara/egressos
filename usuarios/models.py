@@ -97,7 +97,7 @@ class Usuario(models.Model):
     rua = models.CharField(max_length=120)
     numero = models.CharField(max_length=50, verbose_name='Número')
     complemento = models.CharField(max_length=120, blank=True, null=True)
-    pais = models.ForeignKey(Pais, on_delete=models.PROTECT, blank=True, null=True)
+#    pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
     cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT, blank=True, null=True)
     cidade_exterior = models.CharField(max_length=120, blank=True, null=True)
     estado_exterior = models.CharField(max_length=120, blank=True, null=True)

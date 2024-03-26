@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import ModelForm, ValidationError
 from .models import *
 from .functions import validate_CPF
 
@@ -25,16 +26,20 @@ class CadastrarForm(ModelForm):
     celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icelular)", 'onload' : 'mascara(this,icelular)'}))
     cep = forms.CharField(label = 'CEP', max_length= 10, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
 #    dtNascimento = forms.DateField(label='Dt. Nascimento:', required=True, widget=DateInput(attrs={'type': 'date'}))
+    dtNascimento = forms.DateField(label='Data Nascimento', widget=DateInput(attrs={'type': 'date'}))
 
-    dtNascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
+#    dtNascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
 
     senha = forms.CharField(label = 'Senha:', widget=forms.PasswordInput)
     senha_confirma = forms.CharField(label = 'Confirmação de senha:', widget=forms.PasswordInput)
-    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), widget = forms.Select(attrs={'class': "selEstado"}))
-#    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    pais = forms.ModelChoiceField(queryset=Pais.objects.all(), widget = forms.Select(attrs={'class': "selPais"}))
+    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), required=False, widget = forms.Select(attrs={'class': "selEstado"}))
 
-    field_order = ['nome', 'email', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'estado', 'cidade', 'cep', 'senha', 'senha_confirma']
+
+#    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
+#    captcha = ReCaptchaField(widget=ReCaptchaV3)
+
+    field_order = ['nome', 'email', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'pais', 'estado', 'cidade', 'estado_exterior', 'cidade_exterior', 'cep', 'senha', 'senha_confirma']
 
     def clean_dtNascimento(self):
         from datetime import date
