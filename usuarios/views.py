@@ -130,6 +130,62 @@ def cadastro(request):
     return render(request, 'usuarios/cadastro.html', { 'usuario' : usuario })
 
 
+
+@login_required
+def cadastro_altera(request):
+
+    usuario = Usuario.objects.get(user=request.user)
+
+    if request.method == 'POST':
+        print('entrou no post', request.POST)
+        form = CadastrarForm(request.POST, instance=usuario)
+        if form.is_valid():
+            """
+            try:
+                cidade = Cidade.objects.get(id=request.POST.get('cidade'))
+            except Exception as e:
+                trataErro(request, e, form)
+            """
+            try:
+                user = User.objects.get(id=request.user.id)
+
+                # Update fields and then save again
+                user.first_name = form.cleaned_data["nome"]
+                user.save()
+
+                form.save()
+
+                messages.success(request, 'Cadastro alterado.')
+
+                return render(request, 'usuarios/cadastro.html', { 'usuario' : usuario })
+
+            except Exception as e:
+                erro = str(e).split(', ')
+
+                if erro[0] == '(1062':
+                    messages.error(request, 'Erro: Usuário já existe.')
+                else:
+                    # Se teve erro:
+                    print('Erro: ', form.errors)
+                    erro_tmp = str(form.errors)
+                    erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
+                    erro_tmp = erro_tmp.replace('</li>', '')
+                    erro_tmp = erro_tmp.replace('<ul>', '')
+                    erro_tmp = erro_tmp.replace('</ul>', '')
+                    erro_tmp = erro_tmp.split('<li>')
+
+                    print('erro:', erro_tmp)
+
+                    messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
+        else:
+            messages.error(request, 'Corrigir o erro apresentado.')
+    else:
+        form = CadastrarForm(instance=usuario, initial={'nome': request.user.first_name, 'estado': usuario.cidade.estado })
+
+
+    return render(request, 'usuarios/cadastrar.html', { 'form': form })
+
+
 def carrega_pais(request):
     arquivo = open('/home/loyola/Downloads/paises.txt')
     for linha in arquivo:
