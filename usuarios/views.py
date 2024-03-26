@@ -35,7 +35,7 @@ def entrar(request):
                 print('next:', form.cleaned_data["next"])
                 if form.cleaned_data["next"] == '':
                     print('next vazio')
-                    return redirect(reverse('adm:inicio'))
+                    return redirect(reverse('usuarios:inicio'))
                 else:
                     print('next não vazio')
                     return redirect('%s?next=%s' % (reverse('login'), full_path))
@@ -52,6 +52,13 @@ def entrar(request):
 
     print(form)
     return render(request, 'usuarios/login.html', { 'form' : form })
+
+
+
+@login_required
+def sair(request):
+    logout(request)
+    return redirect(reverse('usuarios:inicio'))
 
 
 # @login_required
@@ -114,6 +121,13 @@ def cadastrar(request):
         form.fields["cidade"].initial = 3639
 
     return render(request, 'usuarios/cadastrar.html', { 'form': form })
+
+
+@login_required
+def cadastro(request):
+    usuario = Usuario.objects.get(user=request.user)
+
+    return render(request, 'usuarios/cadastro.html', { 'usuario' : usuario })
 
 
 def carrega_pais(request):

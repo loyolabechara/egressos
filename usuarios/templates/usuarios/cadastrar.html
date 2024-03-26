@@ -11,19 +11,16 @@
             <div class="card shadow shadow-primary p-4" style="max-width: 19rem;">
                 <img src="{% static "logoiprj.png" %}" />
             
-                    <h2>Faça o seu login:</h2>
-                    <form method="post" id="formulario" data-cidades-url="{% url 'usuarios:ajax_load_cidades' %}" novalidate>
-                        {% csrf_token %}
-                        {{ form | crispy }}
-                        <div class="text-center p-2">
-                            <input class="btn btn-primary" type="submit" value="Entrar">
-                        </div>
-                        <input type="hidden" name="next" value="{{next}}" />
-                    </form>
-                    <div class="text-center">
-                        <a href="{% url 'password_reset' %}" class="text-primary p-2">Esqueci minha senha</a>
+                <h2>Faça o seu login:</h2>
+                <form method="post" id="formulario" data-cidades-url="{% url 'usuarios:ajax_load_cidades' %}" novalidate>
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="text-center p-2">
+                        <input class="btn btn-primary" type="submit" value="Entrar">
                     </div>
-                </div>
+                    <input type="hidden" name="next" value="{{next}}" />
+                </form>
+            </div>
         </div>
     </div>
 </main>

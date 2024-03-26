@@ -1,0 +1,73 @@
+{% extends "menu.html" %}
+
+{% load template_filters %}
+
+{% load static %}
+
+{% block menu %}
+
+<div class="container">
+    <h3>Cadastro:</h3>
+
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Nome:</th>
+            <td>{{ usuario.user.first_name }}
+        </tr>
+        <tr>
+            <th>E-Mail:</th>
+            <td>{{ usuario.user.username }}
+        </tr>
+        <tr>
+            <th>CPF:</th>
+            <td>{{ usuario.cpf | formata_cpf }}
+        </tr>
+        <tr>
+            <th>Sexo:</th>
+            <td>{{ usuario.get_sexo_display }}
+        </tr>
+        <tr>
+            <th>Dt. Nascimento:</th>
+            <td>{{ usuario.dtNascimento | date:"SHORT_DATE_FORMAT" }}
+        </tr>
+        <tr>
+            <th>Celular:</th>
+            <td>{{ usuario.celular | formata_tel }}
+        </tr>
+        <tr>
+            <th>Rua:</th>
+            <td>{{ usuario.rua }}
+        </tr>
+        <tr>
+            <th>Número:</th>
+            <td>{{ usuario.numero }}
+        </tr>
+        <tr>
+            <th>Complemento:</th>
+            <td>{{ usuario.complemento | default_if_none:"--" }}
+        </tr>
+        <tr>
+            <th>País:</th>
+            <td>{{ usuario.pais }}
+        </tr>
+        <tr>
+            <th>Estado:</th>
+            <td>{{ usuario.cidade.estado }}
+        </tr>
+        <tr>
+            <th>Cidade:</th>
+            <td>{{ usuario.cidade.nome }}
+        </tr>
+        <tr>
+            <th>CEP:</th>
+            <td>{{ usuario.cep | formata_cep }}
+        </tr>
+        <tr>
+            <th>Dt. Inclusão:</th>
+            <td>{{ usuario.dtInclusao | date:"SHORT_DATETIME_FORMAT" }}
+        </tr>
+    </table>
+
+    <a class="btn btn-primary" href="cadastro_altera">Alterar Cadastro</a>
+</div>
+{% endblock %}

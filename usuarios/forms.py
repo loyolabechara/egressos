@@ -32,7 +32,7 @@ class CadastrarForm(ModelForm):
 
     senha = forms.CharField(label = 'Senha:', widget=forms.PasswordInput)
     senha_confirma = forms.CharField(label = 'Confirmação de senha:', widget=forms.PasswordInput)
-    pais = forms.ModelChoiceField(queryset=Pais.objects.all(), widget = forms.Select(attrs={'class': "selPais"}))
+#    pais = forms.ModelChoiceField(queryset=Pais.objects.all(), widget = forms.Select(attrs={'class': "selPais"}))
     estado = forms.ModelChoiceField(queryset=Estado.objects.all(), required=False, widget = forms.Select(attrs={'class': "selEstado"}))
 
 
