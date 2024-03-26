@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import ModelForm, ValidationError
 from .models import *
-from .functions import validate_CPF
+from .functions_cpf_cnpj import validate_CPF
 
 
 class LoginForm(forms.Form):
@@ -32,7 +33,7 @@ class CadastrarForm(ModelForm):
     senha_confirma = forms.CharField(label = 'Confirmação de senha:', widget=forms.PasswordInput)
     estado = forms.ModelChoiceField(queryset=Estado.objects.all(), widget = forms.Select(attrs={'class': "selEstado"}))
 #    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
-    captcha = ReCaptchaField(widget=ReCaptchaV3)
+#    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
     field_order = ['nome', 'email', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'estado', 'cidade', 'cep', 'senha', 'senha_confirma']
 
