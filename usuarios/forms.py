@@ -26,16 +26,20 @@ class CadastrarForm(ModelForm):
     celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icelular)", 'onload' : 'mascara(this,icelular)'}))
     cep = forms.CharField(label = 'CEP', max_length= 10, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
 #    dtNascimento = forms.DateField(label='Dt. Nascimento:', required=True, widget=DateInput(attrs={'type': 'date'}))
+    dtNascimento = forms.DateField(label='Data Nascimento', widget=DateInput(attrs={'type': 'date'}))
 
-    dtNascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
+#    dtNascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
 
     senha = forms.CharField(label = 'Senha:', widget=forms.PasswordInput)
     senha_confirma = forms.CharField(label = 'Confirmação de senha:', widget=forms.PasswordInput)
-    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), widget = forms.Select(attrs={'class': "selEstado"}))
+#    pais = forms.ModelChoiceField(queryset=Pais.objects.all(), widget = forms.Select(attrs={'class': "selPais"}))
+    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), required=False, widget = forms.Select(attrs={'class': "selEstado"}))
+
+
 #    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
 #    captcha = ReCaptchaField(widget=ReCaptchaV3)
 
-    field_order = ['nome', 'email', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'estado', 'cidade', 'cep', 'senha', 'senha_confirma']
+    field_order = ['nome', 'email', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'pais', 'estado', 'cidade', 'estado_exterior', 'cidade_exterior', 'cep', 'senha', 'senha_confirma']
 
     def clean_dtNascimento(self):
         from datetime import date
@@ -104,3 +108,69 @@ class CadastrarForm(ModelForm):
     class Meta:
         model = Usuario
         exclude = ['user', 'ativo', 'dt_inclusao']
+
+
+
+
+
+class CadastroAlteraForm(ModelForm):
+
+    nome = forms.CharField(label = 'Nome:')
+    cpf = forms.CharField(label='CPF', max_length=14, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icpf)"}))
+    celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icelular)", 'onload' : 'mascara(this,icelular)'}))
+    cep = forms.CharField(label = 'CEP', max_length= 10, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
+    dtNascimento = forms.DateField(label='Dt. Nascimento:', required=True, widget=DateInput(attrs={'type': 'date'}))
+    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), widget = forms.Select(attrs={'class': "selEstado"}))
+#    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
+
+    field_order = ['nome', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'pais', 'estado', 'cidade', 'estado_exterior', 'cidade_exterior', 'cep']
+
+    def clean_dtNascimento(self):
+        from datetime import date
+
+        today = date.today()
+
+        dtNascimentoAux = self.cleaned_data["dtNascimento"]
+
+        idade = today.year - dtNascimentoAux.year - ((today.month, today.day) < (dtNascimentoAux.month, dtNascimentoAux.day))
+
+        if idade < 18:
+            raise ValidationError('Permitido apenas para pessoas maiores de 18 anos.')
+
+        return self.cleaned_data["dtNascimento"]
+    def clean_cpf(self):
+        cpf = validate_CPF(self.cleaned_data["cpf"])
+        cpf = cpf.replace('.','')
+        cpf = cpf.replace('-','')
+        return cpf
+    def clean_celular(self):
+        telefone = self.cleaned_data["celular"]
+        telefone = telefone.replace("(",'')
+        telefone = telefone.replace(")",'')
+        telefone = telefone.replace("-",'')
+        telefone = telefone.replace(" ",'')
+        if len(telefone) == 10:
+            if telefone[2:3] != '2':
+                raise ValidationError('Insira um número válido.')
+        else:
+            if len(telefone) != 11:
+                raise ValidationError('Insira um número válido.')
+        return telefone
+    def clean_cep(self):
+        cep = self.cleaned_data["cep"]
+        cep = cep.replace(".",'')
+        cep = cep.replace("-",'')
+        if len(cep) != 8:
+            raise ValidationError('Insira um CEP válido.')
+        return cep
+
+    class Meta:
+        model = Usuario
+        exclude = ['user', 'email', 'ativo', 'dt_inclusao', 'senha']
+
+
+class RedeSocialForm(ModelForm):
+
+    class Meta:
+        model = Usuario_RedeSocial
+        exclude = ['user', 'dt_inclusao']

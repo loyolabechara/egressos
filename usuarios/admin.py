@@ -21,3 +21,9 @@ class CidadeAdmin(admin.ModelAdmin):
     search_fields = ['nome']
     list_filter = ['estado']
 admin.site.register(Cidade, CidadeAdmin)
+
+
+class Rede_SocialAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome']
+    search_fields = ['nome']
+admin.site.register(Rede_Social, Rede_SocialAdmin)

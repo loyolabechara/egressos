@@ -8,20 +8,14 @@
 <div class="menu">
     <div class="container">
         <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4">
-
-            <div class="col-md-3 mb-2 mb-md-0">
-
-                <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-                    <img class="bi" src="https://sebrae.com.br/Sebrae/Portal%20Sebrae/resources/images/icons/portal/sb-icon__logo-sebrae-white.svg">
-                </a>
-            </div>
-            <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="{% url 'usuarios:inicio' %}" class="nav-link px-2 text-white">Sessões de Negócios</a></li>
-                <li><a href="{% url 'usuarios:inicio' %}" class="nav-link px-2 text-white">Rodadas de Negócios</a></li>
-                <li><a href="{% url 'usuarios:inicio' %}" class="nav-link px-2 text-white">Rodadas de Negócios</a></li>
+            <ul class="nav col-9 col-md-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="{% url 'usuarios:inicio' %}" class="nav-link px-2 text-white">Início</a></li>
+                <li><a href="{% url 'usuarios:academico' %}" class="nav-link px-2 text-white">Currículo Acadêmico</a></li>
+                <li><a href="{% url 'usuarios:profissional' %}" class="nav-link px-2 text-white">Currículo Profissional</a></li>
+                <li><a href="{% url 'usuarios:informes' %}" class="nav-link px-2 text-white">Informes</a></li>
             </ul>
 
-            {% if not user.is_authenticated %}
+                {% if not user.is_authenticated %}
 
             <div class="col-md-3 text-end">
                 <a class="btn btn-outline-light me-2" href="{% url 'usuarios:entrar' %}">Entrar</a>
@@ -35,14 +29,15 @@
                   {{ user.username }}
                 </a>
                 <ul class="dropdown-menu text-small">
-                  <li><a class="dropdown-item" href="{% url 'rodada:cad_usuario' %}">Cadastro</a></li>
-                  <li><a class="dropdown-item" href="{% url 'usuarios:change_password' %}">Mudar minha senha</a></li>
+                  <li><a class="dropdown-item" href="{% url 'usuarios:cadastro' %}">Cadastro</a></li>
+                  <li><a class="dropdown-item" href="{% url 'usuarios:inicio' %}">Mudar minha senha</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="{% url 'rodada:sair' %}">Sair</a></li>
+                  <li><a class="dropdown-item" href="{% url 'usuarios:sair' %}">Sair</a></li>
                 </ul>
             </div>
 
             {% endif %}
+
 
         </header>
     </div>

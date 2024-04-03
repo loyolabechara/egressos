@@ -97,11 +97,11 @@ class Usuario(models.Model):
     rua = models.CharField(max_length=120)
     numero = models.CharField(max_length=50, verbose_name='Número')
     complemento = models.CharField(max_length=120, blank=True, null=True)
-    pais = models.ForeignKey(Pais, on_delete=models.PROTECT, blank=True, null=True)
+    pais = models.ForeignKey(Pais, on_delete=models.PROTECT)
     cidade = models.ForeignKey(Cidade, on_delete=models.PROTECT, blank=True, null=True)
     cidade_exterior = models.CharField(max_length=120, blank=True, null=True)
     estado_exterior = models.CharField(max_length=120, blank=True, null=True)
-    cep = models.CharField(max_length=8)
+    cep = models.CharField(max_length=8, blank=True, null=True)
     ativo = models.BooleanField(default=True)
     dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 
@@ -150,3 +150,21 @@ class Usuario_Empresa(models.Model):
     cargo_outro = models.CharField(max_length=120, blank=True, null=True)
     dtInicio = models.DateField('Data Contratação')
     dtFim = models.DateField('Data Desligamento', blank=True, null=True)
+    dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+
+
+class Usuario_RedeSocial(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Usuários/Redes Sociais"
+        verbose_name = "Usuário/Rede Social"
+        ordering = ['user', 'rede_social']
+
+    def __str__(self):
+        return '%s - %s' % (self.user, self.rede_social)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rede_social = models.ForeignKey(Rede_Social, on_delete=models.CASCADE)
+    endereco = models.CharField(max_length=120, verbose_name="Endereço")
+    dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
