@@ -139,7 +139,6 @@ def cadastro_altera(request):
     usuario = Usuario.objects.get(user=request.user)
 
     if request.method == 'POST':
-        print('entrou no post', request.POST)
         form = CadastroAlteraForm(request.POST, instance=usuario)
         if form.is_valid():
             """
@@ -219,8 +218,26 @@ def informes(request):
 def rede_social_atualiza(request):
     usuario = Usuario.objects.get(user=request.user)
     redes_sociais = Usuario_RedeSocial.objects.filter(user=request.user)
-    
+
+    if request.method == 'POST':
+        print('oi')
+        form = RedeSocialForm(request.POST, instance=usuario)
+        if form.is_valid():
+            print(form)
+            form.save()
+
+            form_aux = form.save(commit=False)
+            form_aux.user = request.user
+            form_aux.save()
+            print('salvou')
+        else:
+            print('erro')
+
+
+
     form = RedeSocialForm()
+
+
 
     return render(request, 'usuarios/rede_social_atualiza.html', { 'form': form, 'user': request.user, 'usuario' : usuario, 'redes_socials': redes_sociais })
 
