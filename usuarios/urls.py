@@ -15,7 +15,9 @@ urlpatterns = [
     #
     path('academico', views.academico, name='academico'),
     path('profissional', views.profissional, name='profissional'),
+    #
     path('informes', views.informes, name='informes'),
+    path('informes_inclui', views.informes_inclui, name='informes_inclui'),
     #
     path('termos_uso', views.termos_uso, name='termos_uso'),
     path('politica_privacidade', views.politica_privacidade, name='politica_privacidade'),

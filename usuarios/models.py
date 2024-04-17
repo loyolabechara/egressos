@@ -102,6 +102,8 @@ class Usuario(models.Model):
     cidade_exterior = models.CharField(max_length=120, blank=True, null=True)
     estado_exterior = models.CharField(max_length=120, blank=True, null=True)
     cep = models.CharField(max_length=8, blank=True, null=True)
+    autorizoExporContato = models.BooleanField(verbose_name="Autorizo expor meus dados de contato para integrantes desta plataforma")
+    autorizoExporCurriculo = models.BooleanField(verbose_name="Autorizo expor meus dados sobre formação acadêmica e profissional para integrantes desta plataforma")
     ativo = models.BooleanField(default=True)
     dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
 
@@ -167,4 +169,33 @@ class Usuario_RedeSocial(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rede_social = models.ForeignKey(Rede_Social, on_delete=models.CASCADE)
     endereco = models.CharField(max_length=120, verbose_name="Endereço")
+    dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+class Tipo_Informe(models.Model):
+
+    class Meta:
+        ordering = ['descricao']
+        verbose_name_plural = "Tipos de Informes"
+        verbose_name = "Tipo de Informe"
+
+
+    def __str__(self):
+        return '%s' % (self.descricao)
+
+    descricao = models.CharField(unique=True, max_length=120)
+    dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+
+class Informe(models.Model):
+
+    class Meta:
+        ordering = ['id']
+
+
+    def __str__(self):
+        return '%s - %s - %s' % (self.user, self.tipoInforme, self.texto)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tipoInforme = models.ForeignKey(Tipo_Informe, on_delete=models.PROTECT)
+    texto = models.CharField(max_length=3000)
     dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')

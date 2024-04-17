@@ -169,8 +169,16 @@ class CadastroAlteraForm(ModelForm):
         exclude = ['user', 'email', 'ativo', 'dt_inclusao', 'senha']
 
 
-class RedeSocialForm(ModelForm):
+class UsuarioRedeSocialForm(ModelForm):
 
     class Meta:
         model = Usuario_RedeSocial
+        exclude = ['user', 'dt_inclusao']
+
+
+class InformeForm(ModelForm):
+    texto = forms.CharField(label='Texto:', max_length=3000,widget=forms.Textarea(attrs={'size': '40'}))
+
+    class Meta:
+        model = Informe
         exclude = ['user', 'dt_inclusao']

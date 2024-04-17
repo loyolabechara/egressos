@@ -29,8 +29,28 @@ class Rede_SocialAdmin(admin.ModelAdmin):
 admin.site.register(Rede_Social, Rede_SocialAdmin)
 
 
+class UsuarioAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'cpf', 'dtInclusao']
+    search_fields = ['user__first_name']
+#    list_filter = ['rede_social']
+admin.site.register(Usuario, UsuarioAdmin)
+
+
 class Usuario_RedeSocialAdmin(admin.ModelAdmin):
     list_display = ['id', 'user', 'rede_social', 'endereco']
     search_fields = ['user__first_name']
     list_filter = ['rede_social']
 admin.site.register(Usuario_RedeSocial, Usuario_RedeSocialAdmin)
+
+
+class Tipo_InformeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'descricao', 'dtInclusao']
+    search_fields = ['descricao']
+admin.site.register(Tipo_Informe, Tipo_InformeAdmin)
+
+
+class InformeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'tipoInforme', 'texto', 'dtInclusao']
+    search_fields = ['user__first_name', 'texto']
+    list_filter = ['tipoInforme']
+admin.site.register(Informe, InformeAdmin)

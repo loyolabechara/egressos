@@ -192,6 +192,27 @@ def cadastro_altera(request):
 
     return render(request, 'usuarios/cadastro_altera.html', { 'form': form })
 
+
+def rede_social_atualiza(request):
+#    usuario = Usuario.objects.get(user=request.user)
+    redes_sociais = Usuario_RedeSocial.objects.filter(user=request.user)
+
+    if request.method == 'POST':
+        form = UsuarioRedeSocialForm(request.POST)
+        if form.is_valid():
+            print(form)
+#            form.save()
+
+            form_aux = form.save(commit=False)
+            form_aux.user = request.user
+            form_aux.save()
+        else:
+            print('erro')
+
+    form = UsuarioRedeSocialForm()
+
+    return render(request, 'usuarios/rede_social_atualiza.html', { 'form': form, 'user': request.user, 'redes_socials': redes_sociais })
+
 # ============================
 
 def academico(request):
@@ -209,37 +230,30 @@ def profissional(request):
 
 
 def informes(request):
-    usuario = Usuario.objects.get(user=request.user)
-    empresas = Usuario_Empresa.objects.filter(user=request.user)
+    informes = Informe.objects.all()
     
-    return render(request, 'usuarios/informes.html', { 'user': request.user, 'usuario' : usuario, 'empresas': empresas })
+    return render(request, 'usuarios/informes.html', { 'informes': informes })
 
 
-def rede_social_atualiza(request):
-    usuario = Usuario.objects.get(user=request.user)
-    redes_sociais = Usuario_RedeSocial.objects.filter(user=request.user)
+def informes_inclui(request):
 
     if request.method == 'POST':
-        print('oi')
-        form = RedeSocialForm(request.POST, instance=usuario)
+        form = InformeForm(request.POST)
         if form.is_valid():
             print(form)
-            form.save()
+#            form.save()
 
             form_aux = form.save(commit=False)
             form_aux.user = request.user
             form_aux.save()
-            print('salvou')
         else:
             print('erro')
 
 
 
-    form = RedeSocialForm()
+    form = InformeForm()
 
-
-
-    return render(request, 'usuarios/rede_social_atualiza.html', { 'form': form, 'user': request.user, 'usuario' : usuario, 'redes_socials': redes_sociais })
+    return render(request, 'usuarios/informes_inclui.html', { 'form': form, 'user': request.user })
 
 
 """

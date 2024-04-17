@@ -6,8 +6,14 @@
 {% block menu %}
 <main>
     <div class="container">
-        <h3>Atualizar Cadastro</h3>
-        <br><br>
+        <dic class="row">
+            <div class="col">
+                <h3>Atualizar Cadastro</h3>
+            </div>
+            <div class="col text-end">
+                <a class="btn btn-primary" href="javascript:window.history.back();">Volta</a>
+            </div>
+        </div>
         <div class="d-flex justify-content-center">
             <div class="card shadow shadow-primary p-4" style="max-width: 19rem;">
             
@@ -16,7 +22,7 @@
                     {% csrf_token %}
                     {{ form | crispy }}
                     <div class="text-center p-2">
-                        <input class="btn btn-primary" type="submit" value="Entrar">
+                        <input class="btn btn-primary" type="submit" value="Cadastrar">
                     </div>
                     <input type="hidden" name="next" value="{{next}}" />
                 </form>
@@ -77,8 +83,6 @@
             $("#id_estado_exterior").hide();
         }
     });
-
-    alert(document.getElementById('id_pais').value);
 
     pais_exterior(document.getElementById('id_pais').value);
 
