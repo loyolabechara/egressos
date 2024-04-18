@@ -29,16 +29,11 @@ def entrar(request):
         if form.is_valid():
             user = authenticate(username=form.cleaned_data["email"], password=form.cleaned_data["senha"])
 
-            print('user:', user, form.cleaned_data["next"])
-
             if user is not None:
                 login(request, user)
-                print('next:', form.cleaned_data["next"])
                 if form.cleaned_data["next"] == '':
-                    print('next vazio')
                     return redirect(reverse('usuarios:inicio'))
                 else:
-                    print('next não vazio')
                     return redirect('%s?next=%s' % (reverse('login'), full_path))
 
         messages.error(request, 'E-Mail e/ou senha inválidos.')
@@ -47,11 +42,9 @@ def entrar(request):
     #    full_path = request.get_full_path()
 
     full_path = request.META.get('HTTP_REFERER')
-    print('Caminho:', full_path)
 
     form = LoginForm()
 
-    print(form)
     return render(request, 'usuarios/login.html', { 'form' : form })
 
 
@@ -72,7 +65,6 @@ def cadastrar(request):
     if request.method == 'POST':
         form = CadastrarForm(request.POST)
         if form.is_valid():
-            print('captcha:', request.POST.get('captcha'))
             try:
                 cidade = Cidade.objects.get(id=request.POST.get('cidade'))
             except Exception as e:
@@ -200,9 +192,6 @@ def rede_social_atualiza(request):
     if request.method == 'POST':
         form = UsuarioRedeSocialForm(request.POST)
         if form.is_valid():
-            print(form)
-#            form.save()
-
             form_aux = form.save(commit=False)
             form_aux.user = request.user
             form_aux.save()
@@ -229,8 +218,30 @@ def profissional(request):
     return render(request, 'usuarios/empresas.html', { 'user': request.user, 'usuario' : usuario, 'empresas': empresas })
 
 
+def profissional_inclui(request):
+
+    if request.method == 'POST':
+        form_empresa = EmpresaForm(request.POST)
+        form_usuario_empresa = Usuario_EmpresaForm(request.POST)
+
+        if form_empresa.is_valid() and form_usuario_empresa.is_valid():
+            form_empresa_aux = form_empresa.save()
+            form_usuario_empresa_aux = form_usuario_empresa.save(commit=False)
+            form_usuario_empresa_aux.empresa = form_empresa_aux
+            form_usuario_empresa_aux.user = request.user
+            form_usuario_empresa_aux.save()
+
+            return redirect(reverse('usuarios:profissional'))
+
+
+    form_empresa = EmpresaForm()
+    form_usuario_empresa = Usuario_EmpresaForm()
+    
+    return render(request, 'usuarios/profissional_inclui.html', { 'form_empresa': form_empresa, 'form_usuario_empresa': form_usuario_empresa })
+
+
 def informes(request):
-    informes = Informe.objects.all()
+    informes = Informe.objects.all().order_by('-id')
     
     return render(request, 'usuarios/informes.html', { 'informes': informes })
 
@@ -240,16 +251,11 @@ def informes_inclui(request):
     if request.method == 'POST':
         form = InformeForm(request.POST)
         if form.is_valid():
-            print(form)
-#            form.save()
-
             form_aux = form.save(commit=False)
             form_aux.user = request.user
             form_aux.save()
         else:
             print('erro')
-
-
 
     form = InformeForm()
 
@@ -279,3 +285,13 @@ def load_cidades(request):
     cidades = Cidade.objects.filter(estado = estado_id).order_by('nome')
 
     return render(request, 'usuarios/ret_cidades.html', {'cidades' : cidades})
+
+
+
+@login_required
+def mostra_usuario(request, id):
+    user = User.objects.get(id=id)
+    usuario = Usuario.objects.get(user=user)
+    redes_sociais = Usuario_RedeSocial.objects.filter(user=request.user)
+
+    return render(request, 'usuarios/mostra_usuario.html', { 'usuario' : usuario, 'redes_sociais': redes_sociais })

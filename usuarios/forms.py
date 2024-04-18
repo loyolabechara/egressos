@@ -178,7 +178,25 @@ class UsuarioRedeSocialForm(ModelForm):
 
 class InformeForm(ModelForm):
     texto = forms.CharField(label='Texto:', max_length=3000,widget=forms.Textarea(attrs={'size': '40'}))
+    dtExpiracao = forms.DateField(label='Data de Expiração', widget=DateInput(attrs={'type': 'date'}))
 
     class Meta:
         model = Informe
         exclude = ['user', 'dt_inclusao']
+
+
+class EmpresaForm(ModelForm):
+    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), required=False, widget = forms.Select(attrs={'class': "selEstado"}))
+
+    class Meta:
+        model = Empresa
+        exclude = ['dt_inclusao']
+
+
+class Usuario_EmpresaForm(ModelForm):
+    dtInicio = forms.DateField(label='Dt. Contratação:', required=True, widget=DateInput(attrs={'type': 'date'}))
+    dtFim = forms.DateField(label='Dt. Rescisão:', required=False, widget=DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Usuario_Empresa
+        exclude = ['user', 'empresa', 'dt_inclusao']

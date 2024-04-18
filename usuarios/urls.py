@@ -10,11 +10,14 @@ urlpatterns = [
     path('', views.inicio, name='inicio'),
     path('cadastrar', views.cadastrar, name='cadastrar'),
     path('cadastro', views.cadastro, name='cadastro'),
+    path('mostra_usuario/<int:id>', views.mostra_usuario, name='mostra_usuario'),
+
     path('cadastro_altera', views.cadastro_altera, name='cadastro_altera'),
     path('rede_social_atualiza', views.rede_social_atualiza, name='rede_social_atualiza'),
     #
     path('academico', views.academico, name='academico'),
     path('profissional', views.profissional, name='profissional'),
+    path('profissional_inclui', views.profissional_inclui, name='profissional_inclui'),
     #
     path('informes', views.informes, name='informes'),
     path('informes_inclui', views.informes_inclui, name='informes_inclui'),

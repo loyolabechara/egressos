@@ -198,4 +198,5 @@ class Informe(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     tipoInforme = models.ForeignKey(Tipo_Informe, on_delete=models.PROTECT)
     texto = models.CharField(max_length=3000)
+    dtExpiracao = models.DateField(verbose_name='Dt. Expiração')
     dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')

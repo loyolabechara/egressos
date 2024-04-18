@@ -26,7 +26,7 @@
         <tr>
             <td>{{ i.tipoInforme }}</td>
             <td>{{ i.texto }}</td>
-            <td>{{ i.user.first_name }}</td>
+            <td><a href="{% url 'usuarios:mostra_usuario' i.user.id %}">{{ i.user.first_name }}</a></td>
             <td>{{ i.dtInclusao | date:"SHORT_DATETIME_FORMAT" }}</td>
         </tr>
 

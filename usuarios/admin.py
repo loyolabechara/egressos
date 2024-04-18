@@ -54,3 +54,21 @@ class InformeAdmin(admin.ModelAdmin):
     search_fields = ['user__first_name', 'texto']
     list_filter = ['tipoInforme']
 admin.site.register(Informe, InformeAdmin)
+
+
+class CargoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome']
+    search_fields = ['nome']
+admin.site.register(Cargo, CargoAdmin)
+
+
+class EmpresaAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome', 'pais', 'cidade', 'dtInclusao']
+    search_fields = ['user__first_name']
+admin.site.register(Empresa, EmpresaAdmin)
+
+
+class Usuario_EmpresaAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'empresa', 'cargo', 'dtInicio', 'dtFim', 'dtInclusao']
+    search_fields = ['user__first_name']
+admin.site.register(Usuario_Empresa, Usuario_EmpresaAdmin)
