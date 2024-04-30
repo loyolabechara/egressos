@@ -16,6 +16,10 @@ urlpatterns = [
     path('rede_social_atualiza', views.rede_social_atualiza, name='rede_social_atualiza'),
     #
     path('academico', views.academico, name='academico'),
+    path('academico_inclui', views.academico_inclui, name='academico_inclui'),
+    path('academico_inclui_graduacao/<int:id>', views.academico_inclui_graduacao, name='academico_inclui_graduacao'),
+    path('academico_inclui_pos/<int:id>', views.academico_inclui_pos, name='academico_inclui_pos'),
+    #
     path('profissional', views.profissional, name='profissional'),
     path('profissional_inclui', views.profissional_inclui, name='profissional_inclui'),
     #

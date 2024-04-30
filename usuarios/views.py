@@ -68,6 +68,7 @@ def cadastrar(request):
             try:
                 cidade = Cidade.objects.get(id=request.POST.get('cidade'))
             except Exception as e:
+                print('Erro:', e)
                 trataErro(request, e, form)
 
             try:
@@ -204,13 +205,6 @@ def rede_social_atualiza(request):
 
 # ============================
 
-def academico(request):
-    usuario = Usuario.objects.get(user=request.user)
-    empresas = Usuario_Empresa.objects.filter(user=request.user)
-    
-    return render(request, 'usuarios/academico.html', { 'user': request.user, 'usuario' : usuario, 'empresas': empresas })
-
-
 def profissional(request):
     usuario = Usuario.objects.get(user=request.user)
     empresas = Usuario_Empresa.objects.filter(user=request.user)
@@ -238,6 +232,61 @@ def profissional_inclui(request):
     form_usuario_empresa = Usuario_EmpresaForm()
     
     return render(request, 'usuarios/profissional_inclui.html', { 'form_empresa': form_empresa, 'form_usuario_empresa': form_usuario_empresa })
+
+
+def academico(request):
+    usuario = Usuario.objects.get(user=request.user)
+    empresas = Usuario_Empresa.objects.filter(user=request.user)
+    graduacoes = Usuario_Graduacao.objects.filter(user=request.user)
+    pos = Usuario_Pos.objects.filter(user=request.user)
+    
+    return render(request, 'usuarios/academico.html', { 'user': request.user, 'usuario' : usuario, 'graduacoes': graduacoes, 'pos': pos, 'empresas': empresas })
+
+
+def academico_inclui(request):
+    cursos = Curso.objects.all()
+
+    return render(request, 'usuarios/academico_inclui.html', { 'cursos': cursos })
+
+
+def academico_inclui_graduacao(request, id):
+
+    curso = Curso.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = GraduacaoForm(request.POST)
+
+        if form.is_valid():
+            form_aux = form.save(commit=False)
+            form_aux.user = request.user
+            form_aux.curso = curso
+            form_aux.save()
+
+            return redirect(reverse('usuarios:academico'))
+
+    form = GraduacaoForm()
+    
+    return render(request, 'usuarios/academico_inclui_graduacao.html', { 'form': form, 'curso': curso })
+
+
+def academico_inclui_pos(request, id):
+
+    curso = Curso.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = PosForm(request.POST)
+
+        if form.is_valid():
+            form_aux = form.save(commit=False)
+            form_aux.user = request.user
+            form_aux.curso = curso
+            form_aux.save()
+
+            return redirect(reverse('usuarios:academico'))
+
+    form = PosForm()
+    
+    return render(request, 'usuarios/academico_inclui_pos.html', { 'form': form, 'curso': curso })
 
 
 def informes(request):
@@ -293,5 +342,8 @@ def mostra_usuario(request, id):
     user = User.objects.get(id=id)
     usuario = Usuario.objects.get(user=user)
     redes_sociais = Usuario_RedeSocial.objects.filter(user=request.user)
+    graduacoes = Usuario_Graduacao.objects.filter(user=request.user)
+    pos = Usuario_Pos.objects.filter(user=request.user)
+    empresas = Usuario_Empresa.objects.filter(user=request.user)
 
-    return render(request, 'usuarios/mostra_usuario.html', { 'usuario' : usuario, 'redes_sociais': redes_sociais })
+    return render(request, 'usuarios/mostra_usuario.html', { 'usuario' : usuario, 'redes_sociais': redes_sociais, 'graduacoes': graduacoes, 'pos': pos, 'empresas': empresas })

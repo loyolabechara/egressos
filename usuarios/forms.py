@@ -200,3 +200,22 @@ class Usuario_EmpresaForm(ModelForm):
     class Meta:
         model = Usuario_Empresa
         exclude = ['user', 'empresa', 'dt_inclusao']
+
+
+class GraduacaoForm(ModelForm):
+    dtInicio = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+    dtFim = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Usuario_Graduacao
+        exclude = ['user', 'curso', 'dtInclusao']
+
+
+
+class PosForm(ModelForm):
+    dtInicio = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+    dtFim = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Usuario_Pos
+        exclude = ['user', 'dt_inclusao']

@@ -43,6 +43,13 @@ class Usuario_RedeSocialAdmin(admin.ModelAdmin):
 admin.site.register(Usuario_RedeSocial, Usuario_RedeSocialAdmin)
 
 
+class Usuario_GraduacaoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'user', 'curso', 'dtInicio', 'dtFim', 'dtInclusao']
+    search_fields = ['user__first_name']
+    list_filter = ['curso']
+admin.site.register(Usuario_Graduacao, Usuario_GraduacaoAdmin)
+
+
 class Tipo_InformeAdmin(admin.ModelAdmin):
     list_display = ['id', 'descricao', 'dtInclusao']
     search_fields = ['descricao']

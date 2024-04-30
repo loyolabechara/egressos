@@ -1,7 +1,7 @@
 from django.db import models
 from .functions_cpf_cnpj import validate_CPF
 from django.contrib.auth.models import User
-from cursos.models import Curso, Linha_Pesquisa
+from cursos.models import Curso, Linha_Pesquisa, Area_De_Concentracao
 
 # Create your models here.
 
@@ -170,6 +170,45 @@ class Usuario_RedeSocial(models.Model):
     rede_social = models.ForeignKey(Rede_Social, on_delete=models.CASCADE)
     endereco = models.CharField(max_length=120, verbose_name="Endereço")
     dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+
+
+class Usuario_Graduacao(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Usuários/Graduacao"
+        verbose_name = "Usuário/Graduacao"
+        ordering = ['user', 'dtInicio']
+
+    def __str__(self):
+        return '%s - %s' % (self.user, self.curso)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    dtInicio = models.DateField('Data Início')
+    dtFim = models.DateField('Data Conclusão')
+    dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+
+
+class Usuario_Pos(models.Model):
+
+    class Meta:
+        verbose_name_plural = "Usuários/Pós-Graduacao"
+        verbose_name = "Usuário/Pós-Graduacao"
+        ordering = ['user', 'dtInicio']
+
+    def __str__(self):
+        return '%s - %s' % (self.user, self.curso)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    linhaPesquisa = models.ForeignKey(Linha_Pesquisa, on_delete=models.CASCADE)
+    areaDeConcentracao = models.ForeignKey(Area_De_Concentracao, on_delete=models.CASCADE, blank=True, null=True)
+    dtInicio = models.DateField('Data Início')
+    dtFim = models.DateField('Data Conclusão')
+    dtInclusao = models.DateTimeField(auto_now_add=True, verbose_name='Dt. Inclusão')
+
+
 
 class Tipo_Informe(models.Model):
 

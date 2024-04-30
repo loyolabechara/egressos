@@ -16,8 +16,28 @@ class CursoAdmin(admin.ModelAdmin):
 admin.site.register(Curso, CursoAdmin)
 
 
+class NivelAdmin(admin.ModelAdmin):
+    list_display = ['id', 'descricao', 'dtInclusao']
+    search_fields = ['descricao']
+admin.site.register(Nivel, NivelAdmin)
+
+
+class NivelCursoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'curso', 'nivel', 'dtInclusao']
+    search_fields = ['curso__nome']
+    list_filter = ['nivel']
+admin.site.register(NivelCurso, NivelCursoAdmin)
+
+
 class Linha_PesquisaAdmin(admin.ModelAdmin):
     list_display = ['id', 'curso', 'descricao', 'dtInclusao']
     search_fields = ['descricao']
     list_filter = ['curso']
 admin.site.register(Linha_Pesquisa, Linha_PesquisaAdmin)
+
+
+class Area_De_ConcentracaoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'linhaDePesquisa', 'descricao', 'dtInclusao']
+    search_fields = ['descricao']
+    list_filter = ['linhaDePesquisa']
+admin.site.register(Area_De_Concentracao, Area_De_ConcentracaoAdmin)

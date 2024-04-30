@@ -52,13 +52,13 @@ def validate_CPF(value):
 def trataErro(request, e, form):
     erro = str(e).split(', ')
 
-    print('erro:', erro)
+    print('erro 1:', erro)
 
     if erro[0] == '(1062':
         messages.error(request, 'Erro: Usuário já existe.')
     else:
         # Se teve erro:
-        print('Erro: ', form.errors)
+        print('Erro 1: ', form.errors)
         erro_tmp = str(form.errors)
         erro_tmp = erro_tmp.replace('<ul class="errorlist">', '')
         erro_tmp = erro_tmp.replace('</li>', '')
@@ -66,6 +66,6 @@ def trataErro(request, e, form):
         erro_tmp = erro_tmp.replace('</ul>', '')
         erro_tmp = erro_tmp.split('<li>')
 
-        print('erro:', erro_tmp)
+        print('erro 2:', erro_tmp)
 
         messages.error(request, erro_tmp[1] + ': ' + erro_tmp[2])
