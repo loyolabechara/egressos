@@ -20,7 +20,7 @@ email_pass = env[7]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = eval(debug)
 
-ALLOWED_HOSTS = ['127.0.0.1', '10.4.0.15']
+ALLOWED_HOSTS = ['egressos.iprj.uerj.br', 'egresso.iprj.uerj.br', '127.0.0.1']
 
 
 INSTALLED_APPS = [
