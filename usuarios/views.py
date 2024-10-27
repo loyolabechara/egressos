@@ -111,7 +111,7 @@ def cadastrar(request):
             messages.error(request, 'Corrigir o erro apresentado.')
     else:
         form = CadastrarForm()
-        form.fields["pais"].initial = 31
+        form.fields["pais"].initial = 1
         form.fields["estado"].initial = 19
         form.fields["cidade"].initial = 3639
 
