@@ -35,6 +35,9 @@ class CadastrarForm(ModelForm):
 #    pais = forms.ModelChoiceField(queryset=Pais.objects.all(), widget = forms.Select(attrs={'class': "selPais"}))
     estado = forms.ModelChoiceField(queryset=Estado.objects.all(), required=False, widget = forms.Select(attrs={'class': "selEstado"}))
 
+#    cidade = forms.ModelChoiceField(queryset=Cidade.objects.filter(estado_id=9999), required=False, widget = forms.Select(attrs={'class': "cidade"}))
+    cidade = forms.ModelChoiceField(queryset=Cidade.objects.filter(estado_id=19), required=False)
+
 
 #    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
 #    captcha = ReCaptchaField(widget=ReCaptchaV3)
