@@ -12,7 +12,7 @@
             <div class="card shadow shadow-primary p-4" style="max-width: 19rem;">
             
                 <h2>Cadastro:</h2>
-                <form method="post" id="formulario" data-cidades-url="{% url 'usuarios:ajax_load_cidades' %}" novalidate>
+                <form method="post" id="formulario">
                     {% csrf_token %}
                     {{ form | crispy }}
                     <div class="text-center p-2">
@@ -27,21 +27,20 @@
 
 <script>
 
-    $('.selEstado').change(function mostracidade () {
-        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-        var estadoId = $(this).val();
-            $.ajax({ 
-                url: url,
-                data: {
-                    'id':estadoId,
-                },
-                success: function(data)
-                {
-                    $("#id_cidade").html(data);
-                }
-                });
-    })
+    function desabilita_exterior(){
+        $("label[for='id_cidade']").show();
+        $("#id_cidade").show();
+    
+        $("label[for='id_estado']").show();
+        $("#id_estado").show();
 
+        $("label[for='id_cidade_exterior']").hide();
+        $("#id_cidade_exterior").hide();
+    
+        $("label[for='id_estado_exterior']").hide();
+        $("#id_estado_exterior").hide();
+
+    }
 
     $("#id_pais").on('change', function (e) {
 
@@ -73,29 +72,45 @@
     });
 
 
+    document.addEventListener('DOMContentLoaded', function() {
+        desabilita_exterior();
+      });
+
+
+    const estadoSelect = document.getElementById('id_estado');
+    const cidadeSelect = document.getElementById('id_cidade');
+
+    estadoSelect.addEventListener('change', function() {
+        const estadoId = this.value;
+        cidadeSelect.innerHTML = '<option value="">Carregando cidades...</option>';
+        cidadeSelect.disabled = true;
+
+        if (estadoId) {
+            fetch(`/ajax/load_cidades/${estadoId}/`) // Sua URL para buscar cidades
+                .then(response => response.json())
+                .then(data => {
+                    cidadeSelect.innerHTML = '<option value="">Selecione uma cidade</option>';
+                    cidadeSelect.disabled = false;
+                    data.cidades.forEach(cidade => {
+                        const option = document.createElement('option');
+                        option.value = cidade.id; // Ou cidade.nome, dependendo do que você quer enviar
+                        option.textContent = cidade.nome;
+                        cidadeSelect.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao buscar cidades:', error);
+                    cidadeSelect.innerHTML = '<option value="">Erro ao carregar cidades</option>';
+                });
+        } else {
+            cidadeSelect.innerHTML = '<option value="">Selecione um estado primeiro</option>';
+            cidadeSelect.disabled = true;
+        }
+    });
+
 </script>
 
 <SCRIPT LANGUAGE="JavaScript">
-
-    function mostracidade(){
-        var url = $("#formulario").attr("data-cidades-url");  // get the url of the `load_cities` view
-
-        var cidadeId = formulario.cidade.value;
-        var estadoId = formulario.estado.value;
-        $.ajax({ 
-            url: url,
-            data: {
-                'id':estadoId,
-            },
-            success: function(data) {
-                $("#id_cidade").html(data);
-                document.getElementById('id_cidade').value=cidadeId;
-            }
-        });
-
-    };
-
-    mostracidade();
 
 
     function leech(v){

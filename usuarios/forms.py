@@ -5,7 +5,7 @@ from .functions_cpf_cnpj import validate_CPF
 
 
 class LoginForm(forms.Form):
-    email = forms.CharField(label='E-Mail:')
+    email = forms.EmailField(label='E-Mail:')
     senha = forms.CharField(max_length=20, widget=forms.PasswordInput)
     next = forms.CharField(widget = forms.HiddenInput(), required = False)
 
@@ -25,24 +25,27 @@ class CadastrarForm(ModelForm):
     cpf = forms.CharField(label='CPF', max_length=14, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icpf)"}))
     celular = forms.CharField(label= "Celular", max_length=15, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icelular)", 'onload' : 'mascara(this,icelular)'}))
     cep = forms.CharField(label = 'CEP', max_length= 10, widget = forms.TextInput(attrs={'onkeydown':"mascara(this,icep)", 'onload' : 'mascara(this,icep)'}))
-#    dtNascimento = forms.DateField(label='Dt. Nascimento:', required=True, widget=DateInput(attrs={'type': 'date'}))
     dtNascimento = forms.DateField(label='Data Nascimento', widget=DateInput(attrs={'type': 'date'}))
-
-#    dtNascimento = forms.DateField(label='Data de Nascimento:', widget = forms.DateInput(attrs={'class': 'form-control', 'placeholder':'DD/MM/AAAA', 'onkeydown':'mascara(this,data)', 'onload' : 'mascara(this,data)', 'maxlength':'10'}))
-
     senha = forms.CharField(label = 'Senha:', widget=forms.PasswordInput)
     senha_confirma = forms.CharField(label = 'Confirmação de senha:', widget=forms.PasswordInput)
-#    pais = forms.ModelChoiceField(queryset=Pais.objects.all(), widget = forms.Select(attrs={'class': "selPais"}))
-    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), required=False, widget = forms.Select(attrs={'class': "selEstado"}))
-
-#    cidade = forms.ModelChoiceField(queryset=Cidade.objects.filter(estado_id=9999), required=False, widget = forms.Select(attrs={'class': "cidade"}))
-    cidade = forms.ModelChoiceField(queryset=Cidade.objects.filter(estado_id=19), required=False)
-
-
-#    cidade = forms.ModelChoiceField(queryset=Cidade.objects.all(), widget = forms.Select(attrs={'class': "selCidade"}))
-#    captcha = ReCaptchaField(widget=ReCaptchaV3)
-
+    estado = forms.ModelChoiceField(queryset=Estado.objects.all(), empty_label="Selecione um estado")
+    cidade = forms.ModelChoiceField(queryset=Cidade.objects.none(), empty_label="Selecione uma cidade", required=False)
     field_order = ['nome', 'email', 'cpf', 'sexo', 'dtNascimento', 'celular', 'rua', 'numero', 'complemento', 'pais', 'estado', 'cidade', 'estado_exterior', 'cidade_exterior', 'cep', 'senha', 'senha_confirma']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cidade'].widget.attrs['disabled'] = True
+        if 'estado' in self.data:
+            try:
+                estado_id = int(self.data.get('estado'))
+                self.fields['cidade'].queryset = Cidade.objects.filter(estado=estado_id)
+            except (ValueError, TypeError):
+                self.fields['cidade'].queryset = Cidade.objects.none()
+        elif self.initial.get('estado'):
+            estado_id = self.initial.get('estado')
+            self.fields['cidade'].queryset = Cidade.objects.filter(estado=estado_id)
+        else:
+             self.fields['cidade'].queryset = Cidade.objects.none()
 
     def clean_dtNascimento(self):
         from datetime import date

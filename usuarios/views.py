@@ -63,7 +63,11 @@ def inicio(request):
 
 def cadastrar(request):
     if request.method == 'POST':
+        print(request.POST['rua'])
+        print(request.POST['estado'])
+        print(request.POST['cidade'])
         form = CadastrarForm(request.POST)
+        print("form------->", form)
         if form.is_valid():
             try:
                 cidade = Cidade.objects.get(id=request.POST.get('cidade'))
@@ -85,7 +89,7 @@ def cadastrar(request):
                 usuario.save()
                 form.save_m2m()
 
-                messages.success(request, 'Conta criada.')
+                messages.success(request, 'Usuário cadastrado.')
 
                 return redirect(reverse("usuarios:inicio"))
 
@@ -112,8 +116,8 @@ def cadastrar(request):
     else:
         form = CadastrarForm()
         form.fields["pais"].initial = 1
-        form.fields["estado"].initial = 19
-        form.fields["cidade"].initial = 3639
+#        form.fields["estado"].initial = 19
+#        form.fields["cidade"].initial = 3639
 
     return render(request, 'usuarios/cadastrar.html', { 'form': form })
 
@@ -325,8 +329,9 @@ def carrega_pais(request):
         pais.save()
 """
 
-def load_cidades(request):
-
+def load_cidades(request, estado_id):
+    from django.http import JsonResponse
+    """
     if not request.GET.get('id'):
         return render(request, 'usuarios/ret_cidades.html', {})
 
@@ -334,6 +339,9 @@ def load_cidades(request):
     cidades = Cidade.objects.filter(estado = estado_id).order_by('nome')
 
     return render(request, 'usuarios/ret_cidades.html', {'cidades' : cidades})
+    """
+    cidades = Cidade.objects.filter(estado_id=estado_id).values('id', 'nome')
+    return JsonResponse({'cidades': list(cidades)})
 
 
 

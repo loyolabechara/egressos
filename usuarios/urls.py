@@ -30,7 +30,7 @@ urlpatterns = [
     path('politica_privacidade', views.politica_privacidade, name='politica_privacidade'),
 #    path('fale_conosco', views.fale_conosco, name='fale_conosco'),
     #
-    path('ajax/load_cidades/', views.load_cidades, name = 'ajax_load_cidades'),
+    path('ajax/load_cidades/<int:estado_id>/', views.load_cidades, name = 'ajax_load_cidades'),
     #
 #    path('carrega_pais', views.carrega_pais, name='carrega_pais'),
 ]
